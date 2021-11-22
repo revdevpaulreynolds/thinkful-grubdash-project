@@ -5,13 +5,13 @@ const controller = require("./orders.controller");
 // TODO: Implement the /orders routes needed to make the tests pass
 router.route("/")
     .get(controller.list)
-    .post()
+    .post(controller.create)
     .all(methodNotAllowed)
 
 router.route("/:orderId")
     .get(controller.read)
-    .put()
-    .delete()
+    .put(controller.update)
+    .delete(controller.delete)
     .all(methodNotAllowed)
 
 module.exports = router;
