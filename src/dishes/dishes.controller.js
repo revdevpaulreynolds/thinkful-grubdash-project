@@ -24,30 +24,19 @@ function dishExists (req, res, next) {
 
 function validateDish(req, res, next) {
     const { data: result = {} } = req.body;
-    if (!result.name) {
-        next({
-            status: 400,
-            message: `Dish must include a name`,
-        })
-    } else if (!result.description) {
-        next({
-            status: 400,
-            message: `Dish must include a description`,
-        })
-    } else if (!result.price) {
-        next({
-            status: 400,
-            message: `Dish must include a price`,
-        })
-    } else if (!Number.isInteger(result.price) || result.price < 1) {
+    const requiredFields = ["name", "description", "price", "image_url"]
+    for (const field of requiredFields) {
+        if(!result[field]) {
+            return next({
+                status: 400,
+                message: `Dish must include a ${field}`,
+            })
+        }
+    }
+    if (!Number.isInteger(result.price) || result.price < 1) {
         next({
             status: 400,
             message: `Dish must have a price that is an integer greater than 0`,
-        })
-    } else if (!result.image_url) {
-        next({
-            status: 400,
-            message: `Dish must include a image_url`,
         })
     }
     next();
@@ -86,7 +75,6 @@ function read(req, res) {
 function update(req, res) {
     let foundDish = res.locals.dish;
     const { data: updatedDish } = req.body;
-    console.log(`Updated dish: ${updatedDish.id}`)
     if (!updatedDish.id) {
         foundDish = {
             ...updatedDish,
@@ -95,10 +83,6 @@ function update(req, res) {
     } else {
         foundDish = {...updatedDish};
     }
-    // foundDish = {
-    //     id: foundDish.id,
-    //     ...updatedDish,
-    // };
     res.json({ data: foundDish });
 
 }
