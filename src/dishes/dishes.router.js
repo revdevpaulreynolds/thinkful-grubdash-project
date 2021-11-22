@@ -4,13 +4,13 @@ const controller = require("./dishes.controller");
 
 // TODO: Implement the /dishes routes needed to make the tests pass
 router.route("/")
-    .get()
-    .post()
+    .get(controller.list)
+    .post(controller.create)
     .all(methodNotAllowed)
 
 router.route("/:dishId")
     .get(controller.read)
-    .put()
+    .put(controller.update)
     .all(methodNotAllowed)
 
 module.exports = router;
